@@ -32,13 +32,13 @@ func (m *AppUser) Add(a *User) (err error) {
 		return
 	}
 
-	pass, err := sutil.GeneratePassHash(a.LoginPwd, salt)
+	pass, err := sutil.GeneratePassHash(a.Password, salt)
 	if err != nil {
 		return
 	}
 	now := time.Now()
 
-	m.Appid = sutil.To_md5(a.LoginName + now.Format(FormatDateTime))[0:16]
+	m.Appid = sutil.To_md5(a.UserName + now.Format(FormatDateTime))[0:16]
 	m.Secret = sutil.To_md5(pass + now.Format(FormatDateTime))
 	m.Salt = salt
 	m.Role = "admin"
@@ -55,13 +55,13 @@ func (m *AppUser) Delete() (err error) {
 	return
 }
 
-func (m *AppUser) DeleteByAccount() (err error) {
+func (m *AppUser) DeleteByUser() (err error) {
 	qs := o.QueryTable("AppUser")
 	_, err = qs.Filter("User__Id__in", m.UserIds).Delete()
 	return
 }
 
-func (m *AppUser) GetByAccount() (err error, errC *sutil.ControllerError) {
+func (m *AppUser) GetByUser() (err error, errC *sutil.ControllerError) {
 	err = o.Read(m, "User")
 	if err != nil {
 		errC = sutil.ErrNoRecord

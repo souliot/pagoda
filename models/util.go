@@ -45,12 +45,12 @@ func InitDB(db *DBConfig) (err error) {
 func InitData() (err error) {
 	// default user
 	u := &User{
-		LoginName: "llz",
-		LoginPwd:  "1",
-		UserName:  "林雷洲",
+		UserName: "llz",
+		Password: "1",
+		Name:     "林雷洲",
 	}
-	err, _ = u.ReadOrAdd()
-	if err != nil {
+	err, _ = u.Add()
+	if err != nil && err.Error() != "用户名已存在！" {
 		return
 	}
 

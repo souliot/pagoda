@@ -8,11 +8,15 @@ import (
 	sutil "github.com/souliot/siot-util"
 )
 
-// Operations about Hosts
+// 主机管理
 type HostController struct {
 	BaseController
 }
 
+// @Summary 获取主机信息
+// @Description 获取单个主机详细信息
+// @Param   id     path    int  true        "id"
+// @Success 200 {object} doc.ApiResponse
 // @router /:id [get]
 func (c *HostController) One() {
 	id, _ := c.GetInt(":id", -1)
@@ -40,6 +44,13 @@ func (c *HostController) One() {
 	return
 }
 
+// @Summary 获取主机列表
+// @Description 获取所有主机列表
+// @Param   hostname     query    string  false        "hostname"
+// @Param   ip				   query    string  false        "ip"
+// @Param   limit        query    int     false        "limit"
+// @Param   from         query    int     false        "from"
+// @Success 200 {object} doc.ApiResponse
 // @router / [get]
 func (c *HostController) All() {
 	hostname := c.GetString("hostname")
@@ -69,6 +80,10 @@ func (c *HostController) All() {
 	return
 }
 
+// @Summary 添加主机
+// @Description 添加主机信息
+// @Param   body     body    models.Host  true   "Host"
+// @Success 200 {object} doc.ApiResponse
 // @router / [post]
 func (c *HostController) Add() {
 	m := &models.Host{}
@@ -93,6 +108,10 @@ func (c *HostController) Add() {
 	return
 }
 
+// @Summary 删除单个主机
+// @Description 删除单个主机信息
+// @Param   id     path    int  true        "id"
+// @Success 200 {object} doc.ApiResponse
 // @router /:id [delete]
 func (c *HostController) Delete() {
 	id, _ := c.GetInt(":id", -1)
@@ -117,6 +136,11 @@ func (c *HostController) Delete() {
 	return
 }
 
+// @Summary 批量删除主机
+// @Description 批量删除主机
+// @Param   ids     query    int  true        "ids"
+// @Param   ids     query    int  true        "ids"
+// @Success 200 {object} doc.ApiResponse
 // @router / [delete]
 func (c *HostController) DeleteMulti() {
 	as := c.GetStrings("ids")

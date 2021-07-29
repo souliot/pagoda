@@ -1,0 +1,349 @@
+swagger: "2.0"
+info:
+  title: padoda
+  description: Pagoda is a rest api for ansible
+  version: 1.0.0
+  termsOfService: http://github.com/souliot/
+  contact:
+    email: leizhou.lin@watrix.ai
+basePath: /v1
+paths:
+  /component/:
+    get:
+      tags:
+      - component
+    post:
+      tags:
+      - component
+    delete:
+      tags:
+      - component
+  /component/{id}:
+    get:
+      tags:
+      - component
+    delete:
+      tags:
+      - component
+  /host/:
+    get:
+      tags:
+      - host
+      summary: 获取主机列表
+      description: 获取所有主机列表
+      parameters:
+      - in: query
+        name: hostname
+        description: hostname
+        type: string
+      - in: query
+        name: ip
+        description: ip
+        type: string
+      - in: query
+        name: limit
+        description: limit
+        type: integer
+        format: int64
+      - in: query
+        name: from
+        description: from
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/doc.ApiResponse'
+    post:
+      tags:
+      - host
+      summary: 添加主机
+      description: 添加主机信息
+      parameters:
+      - in: body
+        name: body
+        description: Host
+        required: true
+        schema:
+          $ref: '#/definitions/models.Host'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/doc.ApiResponse'
+    delete:
+      tags:
+      - host
+      summary: 批量删除主机
+      description: 批量删除主机
+      parameters:
+      - in: query
+        name: ids
+        description: ids
+        required: true
+        type: integer
+        format: int64
+      - in: query
+        name: ids
+        description: ids
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/doc.ApiResponse'
+  /host/{id}:
+    get:
+      tags:
+      - host
+      summary: 获取主机信息
+      description: 获取单个主机详细信息
+      parameters:
+      - in: path
+        name: id
+        description: id
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/doc.ApiResponse'
+    delete:
+      tags:
+      - host
+      summary: 删除单个主机
+      description: 删除单个主机信息
+      parameters:
+      - in: path
+        name: id
+        description: id
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/doc.ApiResponse'
+  /property/:
+    get:
+      tags:
+      - property
+    post:
+      tags:
+      - property
+    delete:
+      tags:
+      - property
+  /property/{id}:
+    get:
+      tags:
+      - property
+    delete:
+      tags:
+      - property
+  /user/:
+    get:
+      tags:
+      - user
+      summary: 获取用户列表
+      description: 获取所有用户列表
+      parameters:
+      - in: query
+        name: hostname
+        description: hostname
+        type: string
+      - in: query
+        name: login_name
+        description: login_name
+        type: string
+      - in: query
+        name: limit
+        description: limit
+        type: integer
+        format: int64
+      - in: query
+        name: from
+        description: from
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/doc.ApiResponse'
+    post:
+      tags:
+      - user
+      summary: 添加用户
+      description: 添加用户信息
+      parameters:
+      - in: body
+        name: body
+        description: User
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/doc.ApiResponse'
+    delete:
+      tags:
+      - user
+      summary: 批量删除用户
+      description: 批量删除用户
+      parameters:
+      - in: query
+        name: ids
+        description: ids
+        required: true
+        type: integer
+        format: int64
+      - in: query
+        name: ids
+        description: ids
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/doc.ApiResponse'
+  /user/{id}:
+    get:
+      tags:
+      - user
+      summary: 获取用户信息
+      description: 获取单个用户详细信息
+      parameters:
+      - in: path
+        name: id
+        description: id
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/doc.ApiResponse'
+    delete:
+      tags:
+      - user
+      summary: 删除单个用户
+      description: 删除单个用户信息
+      parameters:
+      - in: path
+        name: id
+        description: id
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/doc.ApiResponse'
+definitions:
+  298.0xc0004573b0.false:
+    title: "false"
+    type: object
+  doc.ApiResponse:
+    title: ApiResponse
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int64
+      data:
+        $ref: '#/definitions/298.0xc0004573b0.false'
+      message:
+        type: string
+      more_info:
+        type: string
+      status:
+        type: integer
+        format: int64
+      type:
+        type: string
+  models.Host:
+    title: Host
+    type: object
+    properties:
+      description:
+        description: 描述信息
+        type: string
+      hostname:
+        description: 主机名
+        type: string
+      id:
+        description: 主机ID
+        type: integer
+        format: int64
+      ids:
+        type: array
+        items:
+          type: integer
+          format: int64
+      ip:
+        description: 主机IP
+        type: string
+      passwd:
+        description: 主机密码
+        type: string
+      root_passwd:
+        description: 主机ROOT密码
+        type: string
+      user:
+        description: 主机用户
+        type: string
+  models.PageQuery:
+    title: PageQuery
+    type: object
+  models.User:
+    title: User
+    type: object
+    properties:
+      create_time:
+        description: 创建时间
+        type: integer
+        format: int64
+      id:
+        description: 用户ID
+        type: integer
+        format: int64
+      ids:
+        type: array
+        items:
+          type: integer
+          format: int64
+      login_name:
+        description: 登陆名
+        type: string
+      login_pwd:
+        description: 登陆密码
+        type: string
+      username:
+        description: 用户姓名
+        type: string
+tags:
+- name: host
+  description: |
+    主机管理
+- name: user
+  description: |
+    用户管理
+- name: component
+  description: |
+    Operations about MetaComponents
+- name: property
+  description: |
+    Operations about Propertys

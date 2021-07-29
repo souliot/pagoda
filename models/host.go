@@ -9,13 +9,13 @@ import (
 
 type Host struct {
 	PageQuery   `orm:"-"`
-	Id          int    `json:"id"`
-	HostName    string `orm:"size(32)" json:"hostname"`
-	IP          string `orm:"size(32);column(ip)" json:"ip"`
-	User        string `orm:"size(32);column(user)" json:"user"`
-	Passwd      string `orm:"size(32);column(passwd)" json:"passwd"`
-	RootPasswd  string `orm:"size(32);column(root_passwd)" json:"root_passwd"`
-	Description string `orm:"size(128);null" json:"description,omitempty"`
+	Id          int    `json:"id" description:"主机ID"`
+	HostName    string `orm:"size(32)" json:"hostname" description:"主机名"`
+	IP          string `orm:"size(32);column(ip)" json:"ip" description:"主机IP"`
+	User        string `orm:"size(32);column(user)" json:"user" description:"主机用户"`
+	Passwd      string `orm:"size(32);column(passwd)" json:"passwd" description:"主机密码"`
+	RootPasswd  string `orm:"size(32);column(root_passwd)" json:"root_passwd" description:"主机ROOT密码"`
+	Description string `orm:"size(128);null" json:"description,omitempty" description:"描述信息"`
 	Ids         []int  `orm:"-" json:"ids,omitempty"`
 }
 

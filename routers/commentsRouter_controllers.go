@@ -187,4 +187,31 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:UserController"],
+        beego.ControllerComments{
+            Method: "GetUserInfo",
+            Router: "/getUserInfo",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:UserController"],
+        beego.ControllerComments{
+            Method: "Login",
+            Router: "/login",
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:UserController"],
+        beego.ControllerComments{
+            Method: "Logout",
+            Router: "/logout",
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
 }

@@ -3,16 +3,19 @@ package controllers
 import (
 	"encoding/json"
 
-	"github.com/beego/beego/v2/core/logs"
 	"github.com/souliot/pagoda/models"
 	sutil "github.com/souliot/siot-util"
 )
 
-// Operations about Users
+// 用户管理
 type UserController struct {
 	BaseController
 }
 
+// @Summary 获取用户信息
+// @Description 获取单个用户详细信息
+// @Param   id     path    int  true        "id"
+// @Success 200 {object} doc.ApiResponse
 // @router /:id [get]
 func (c *UserController) One() {
 	id, _ := c.GetInt(":id", -1)
@@ -40,15 +43,22 @@ func (c *UserController) One() {
 	return
 }
 
+// @Summary 获取用户列表
+// @Description 获取所有用户列表
+// @Param   username     query    string  false		"username"
+// @Param   name         query    string  false   "name"
+// @Param   limit        query    int     false   "limit"
+// @Param   from         query    int     false   "from"
+// @Success 200 {object} doc.ApiResponse
 // @router / [get]
 func (c *UserController) All() {
-	hostname := c.GetString("hostname")
-	login_name := c.GetString("login_name")
+	username := c.GetString("username")
+	name := c.GetString("name")
 	limit, _ := c.GetInt("limit", -1)
 	from, _ := c.GetInt("from", 0)
 	m := &models.User{
-		UserName:  hostname,
-		LoginName: login_name,
+		UserName: username,
+		Name:     name,
 	}
 
 	m.Limit = limit
@@ -69,6 +79,10 @@ func (c *UserController) All() {
 	return
 }
 
+// @Summary 添加用户
+// @Description 添加用户信息
+// @Param   body     body    models.User  true        "User"
+// @Success 200 {object} doc.ApiResponse
 // @router / [post]
 func (c *UserController) Add() {
 	m := &models.User{}
@@ -93,6 +107,10 @@ func (c *UserController) Add() {
 	return
 }
 
+// @Summary 删除单个用户
+// @Description 删除单个用户信息
+// @Param   id     path    int  true        "id"
+// @Success 200 {object} doc.ApiResponse
 // @router /:id [delete]
 func (c *UserController) Delete() {
 	id, _ := c.GetInt(":id", -1)
@@ -117,19 +135,27 @@ func (c *UserController) Delete() {
 	return
 }
 
+// @Summary 批量删除用户
+// @Description 批量删除用户
+// @Param   ids          query    int     false   "ids"
+// @Param   ids     		 query    int     false   "ids"
+// @Param   username     query    string  false   "username"
+// @Param   name         query    string  false   "name"
+// @Success 200 {object} doc.ApiResponse
 // @router / [delete]
 func (c *UserController) DeleteMulti() {
-	as := c.GetStrings("ids")
-	logs.Info(as)
 	ids := c.GetIntSlice("ids")
-	logs.Info(ids)
-	if len(ids) <= 0 {
+	username := c.GetString("username")
+	name := c.GetString("name")
+	if len(ids) <= 0 && username == "" && name == "" {
 		c.Data["json"] = sutil.ErrUserInput
 		c.ServeJSON()
 		return
 	}
 	m := &models.User{
-		Ids: ids,
+		Ids:      ids,
+		UserName: username,
+		Name:     name,
 	}
 
 	err, errC := m.DeleteMulti()
@@ -140,6 +166,77 @@ func (c *UserController) DeleteMulti() {
 		return
 	}
 	c.Data["json"] = sutil.Actionsuccess
+	c.ServeJSON()
+	return
+}
+
+// @Summary 用户登录
+// @Description 用户登录
+// @Param   body     body    models.User  true	"User"
+// @Success 200 {object} doc.ApiResponse
+// @router /login [post]
+func (c *UserController) Login() {
+	m := &models.User{}
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, m)
+	if err != nil {
+		c.Data["json"] = sutil.ErrUserInput
+		c.ServeJSON()
+		return
+	}
+	token, err, errC := m.Login()
+	if err != nil {
+		errC.MoreInfo = err.Error()
+		c.Data["json"] = errC
+		c.ServeJSON()
+		return
+	}
+	c.Data["json"] = sutil.ControllerSuccess{
+		Status: 200,
+		Data:   token,
+	}
+	c.ServeJSON()
+	return
+}
+
+// @Summary 用户登出
+// @Description 用户登出
+// @Success 200 {object} doc.ApiResponse
+// @router /logout [post]
+func (c *UserController) Logout() {
+	token := c.Ctx.Input.Header("Authorization")
+	m := &models.User{}
+
+	err, errC := m.Logout(token)
+	if err != nil {
+		errC.MoreInfo = err.Error()
+		c.Data["json"] = errC
+		c.ServeJSON()
+		return
+	}
+	c.Data["json"] = sutil.Actionsuccess
+	c.ServeJSON()
+	return
+}
+
+// @Summary 获取登录用户信息
+// @Description 获取登录用户信息
+// @Success 200 {object} doc.ApiResponse
+// @router /getUserInfo [get]
+func (c *UserController) GetUserInfo() {
+	token := c.Ctx.Input.Header("Authorization")
+	m := &models.User{}
+
+	err, errC := m.GetUserInfo(token)
+	if err != nil {
+		errC.MoreInfo = err.Error()
+		c.Data["json"] = errC
+		c.ServeJSON()
+		return
+	}
+	c.Data["json"] = sutil.ControllerSuccess{
+		Status: 200,
+		Data:   m,
+	}
 	c.ServeJSON()
 	return
 }

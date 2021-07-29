@@ -9,13 +9,13 @@ import (
 
 type Property struct {
 	PageQuery   `orm:"-"`
-	Id          int    `json:"id"`
-	Variable    string `orm:"size(32)" json:"variable"`
-	Label       string `orm:"size(32)" json:"label"`
-	Description string `orm:"size(128);null" json:"description,omitempty"`
-	Type        string `orm:"size(32)" json:"type"`
-	Default     string `orm:"size(32);null" json:"default,omitempty"`
-	Required    bool   `json:"required"`
+	Id          int    `json:"id" description:"属性ID"`
+	Variable    string `orm:"size(32)" json:"variable" description:"变量名"`
+	Label       string `orm:"size(32)" json:"label" description:"标签"`
+	Description string `orm:"size(128);null" json:"description,omitempty" description:"描述信息"`
+	Type        string `orm:"size(32)" json:"type" description:"变量类型"`
+	Default     string `orm:"size(32);null" json:"default,omitempty" description:"默认值"`
+	Required    bool   `json:"required" description:"是否必须"`
 	Ids         []int  `orm:"-" json:"ids,omitempty"`
 }
 

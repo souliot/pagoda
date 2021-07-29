@@ -9,10 +9,10 @@ import (
 
 type MetaComponent struct {
 	PageQuery `orm:"-"`
-	Id        int       `json:"id"`
-	Name      string    `orm:"size(64)" json:"name"`
-	Version   string    `orm:"size(32)" json:"version"`
-	Property  *Property `orm:"rel(fk)" json:"property"`
+	Id        int       `json:"id" description:"组件ID"`
+	Name      string    `orm:"size(64)" json:"name" description:"组件名称"`
+	Version   string    `orm:"size(32)" json:"version" description:"组件版本"`
+	Property  *Property `orm:"rel(fk)" json:"property" description:"组件属性"`
 	Ids       []int     `orm:"-" json:"ids,omitempty"`
 }
 
