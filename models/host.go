@@ -47,7 +47,7 @@ func (m *Host) All() (ls *List, err error, errC *sutil.ControllerError) {
 		errC = sutil.ErrDbRead
 		return
 	}
-	_, err = qs.OrderBy("Id").Limit(m.Limit, m.From).All(&ss)
+	_, err = qs.OrderBy("Id").Limit(m.PageSize, (m.Page-1)*m.PageSize).All(&ss)
 	if err != nil {
 		errC = sutil.ErrDbRead
 		errC.MoreInfo = err.Error()

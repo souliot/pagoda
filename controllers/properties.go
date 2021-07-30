@@ -42,19 +42,12 @@ func (c *PropertyController) One() {
 
 // @router / [get]
 func (c *PropertyController) All() {
-	variable := c.GetString("variable")
-	label := c.GetString("label")
-	typ := c.GetString("type")
-	limit, _ := c.GetInt("limit", -1)
-	from, _ := c.GetInt("from", 0)
-	m := &models.Property{
-		Variable: variable,
-		Label:    label,
-		Type:     typ,
-	}
-
-	m.Limit = limit
-	m.From = from
+	m := &models.Property{}
+	m.Variable = c.GetString("variable")
+	m.Label = c.GetString("label")
+	m.Type = c.GetString("type")
+	m.Page, _ = c.GetInt("page", 1)
+	m.PageSize, _ = c.GetInt("pageSize", -1)
 
 	res, err, errC := m.All()
 	if err != nil {

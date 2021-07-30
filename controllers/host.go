@@ -48,22 +48,16 @@ func (c *HostController) One() {
 // @Description 获取所有主机列表
 // @Param   hostname     query    string  false        "hostname"
 // @Param   ip				   query    string  false        "ip"
-// @Param   limit        query    int     false        "limit"
-// @Param   from         query    int     false        "from"
+// @Param   page         query    int     false        "page"
+// @Param   pageSize     query    int     false        "pageSize"
 // @Success 200 {object} doc.ApiResponse
 // @router / [get]
 func (c *HostController) All() {
-	hostname := c.GetString("hostname")
-	ip := c.GetString("ip")
-	limit, _ := c.GetInt("limit", -1)
-	from, _ := c.GetInt("from", 0)
-	m := &models.Host{
-		HostName: hostname,
-		IP:       ip,
-	}
-
-	m.Limit = limit
-	m.From = from
+	m := &models.Host{}
+	m.HostName = c.GetString("hostname")
+	m.IP = c.GetString("ip")
+	m.Page, _ = c.GetInt("page", 1)
+	m.PageSize, _ = c.GetInt("pageSize", -1)
 
 	res, err, errC := m.All()
 	if err != nil {

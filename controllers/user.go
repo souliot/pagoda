@@ -47,22 +47,16 @@ func (c *UserController) One() {
 // @Description 获取所有用户列表
 // @Param   username     query    string  false		"username"
 // @Param   name         query    string  false   "name"
-// @Param   limit        query    int     false   "limit"
-// @Param   from         query    int     false   "from"
+// @Param   page         query    int     false   "page"
+// @Param   pageSize     query    int     false   "pageSize"
 // @Success 200 {object} doc.ApiResponse
 // @router / [get]
 func (c *UserController) All() {
-	username := c.GetString("username")
-	name := c.GetString("name")
-	limit, _ := c.GetInt("limit", -1)
-	from, _ := c.GetInt("from", 0)
-	m := &models.User{
-		UserName: username,
-		Name:     name,
-	}
-
-	m.Limit = limit
-	m.From = from
+	m := &models.User{}
+	m.UserName = c.GetString("username")
+	m.Name = c.GetString("name")
+	m.Page, _ = c.GetInt("page", 1)
+	m.PageSize, _ = c.GetInt("pageSize", -1)
 
 	res, err, errC := m.All()
 	if err != nil {

@@ -1,8 +1,8 @@
 package models
 
 type PageQuery struct {
-	From  int `orm:"-" json:"-"`
-	Limit int `orm:"-" json:"-"`
+	Page     int `orm:"-" json:"page,omitempty"`
+	PageSize int `orm:"-" json:"pageSize,omitempty"`
 }
 
 type List struct {

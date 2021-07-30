@@ -42,17 +42,11 @@ func (c *MetaComponentController) One() {
 
 // @router / [get]
 func (c *MetaComponentController) All() {
-	name := c.GetString("name")
-	version := c.GetString("version")
-	limit, _ := c.GetInt("limit", -1)
-	from, _ := c.GetInt("from", 0)
-	m := &models.MetaComponent{
-		Name:    name,
-		Version: version,
-	}
-
-	m.Limit = limit
-	m.From = from
+	m := &models.MetaComponent{}
+	m.Name = c.GetString("name")
+	m.Version = c.GetString("version")
+	m.Page, _ = c.GetInt("Page", 1)
+	m.PageSize, _ = c.GetInt("PageSize", -1)
 
 	res, err, errC := m.All()
 	if err != nil {
