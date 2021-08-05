@@ -8,12 +8,13 @@ import (
 )
 
 type MetaComponent struct {
-	PageQuery `orm:"-"`
-	Id        int       `json:"id" description:"组件ID"`
-	Name      string    `orm:"size(64)" json:"name" description:"组件名称"`
-	Version   string    `orm:"size(32)" json:"version" description:"组件版本"`
-	Property  *Property `orm:"rel(fk)" json:"property" description:"组件属性"`
-	Ids       []int     `orm:"-" json:"ids,omitempty"`
+	PageQuery   `orm:"-"`
+	Id          int         `json:"id" description:"组件ID"`
+	Name        string      `orm:"size(64)" json:"name,omitempty" description:"组件名称"`
+	Version     string      `orm:"size(32)" json:"version,omitempty" description:"组件版本"`
+	Description string      `orm:"size(128);null" json:"description,omitempty" description:"描述信息"`
+	Propertys   []*Property `orm:"reverse(many)" json:"propertys,omitempty" description:"组件属性列表"`
+	Ids         []int       `orm:"-" json:"ids,omitempty"`
 }
 
 func init() {
@@ -66,6 +67,25 @@ func (m *MetaComponent) Add() (err error, errC *sutil.ControllerError) {
 	_, err = o.Insert(m)
 	if err != nil {
 		errC = sutil.ErrDbInsert
+		return
+	}
+	return
+}
+
+func (m *MetaComponent) Update() (err error, errC *sutil.ControllerError) {
+	exist := o.QueryTable(&MetaComponent{}).Filter("Name", m.Name).Filter("Version", m.Version).Filter("Id__ne", m.Id).Exist()
+	if exist {
+		err = fmt.Errorf(sutil.ErrDupRecord.Message)
+		errC = sutil.ErrDupRecord
+		return
+	}
+	_, err = o.Update(m,
+		"Name",
+		"Version",
+		"Description",
+	)
+	if err != nil {
+		errC = sutil.ErrDbUpdate
 		return
 	}
 	return

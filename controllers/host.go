@@ -102,6 +102,34 @@ func (c *HostController) Add() {
 	return
 }
 
+// @Summary 修改主机
+// @Description 修改主机信息
+// @Param   body     body    models.Host  true   "Host"
+// @Success 200 {object} doc.ApiResponse
+// @router / [put]
+func (c *HostController) Update() {
+	m := &models.Host{}
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, m)
+	if err != nil {
+		c.Data["json"] = sutil.ErrUserInput
+		c.ServeJSON()
+		return
+	}
+	err, errC := m.Update()
+	if err != nil {
+		errC.MoreInfo = err.Error()
+		c.Data["json"] = errC
+		c.ServeJSON()
+		return
+	}
+	c.Data["json"] = sutil.ControllerSuccess{
+		Status: 200,
+		Data:   m,
+	}
+	c.ServeJSON()
+	return
+}
+
 // @Summary 删除单个主机
 // @Description 删除单个主机信息
 // @Param   id     path    int  true        "id"

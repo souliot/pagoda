@@ -10,11 +10,11 @@ import (
 type Host struct {
 	PageQuery   `orm:"-"`
 	Id          int    `json:"id" description:"主机ID"`
-	HostName    string `orm:"size(32)" json:"hostname" description:"主机名"`
-	IP          string `orm:"size(32);column(ip)" json:"ip" description:"主机IP"`
-	User        string `orm:"size(32);column(user)" json:"user" description:"主机用户"`
-	Passwd      string `orm:"size(32);column(passwd)" json:"passwd" description:"主机密码"`
-	RootPasswd  string `orm:"size(32);column(root_passwd)" json:"root_passwd" description:"主机ROOT密码"`
+	HostName    string `orm:"size(32)" json:"hostname,omitempty" description:"主机名"`
+	IP          string `orm:"size(32);column(ip)" json:"ip,omitempty" description:"主机IP"`
+	User        string `orm:"size(32);column(user)" json:"user,omitempty" description:"主机用户"`
+	Passwd      string `orm:"size(32);column(passwd)" json:"passwd,omitempty" description:"主机密码"`
+	RootPasswd  string `orm:"size(32);column(root_passwd)" json:"root_passwd,omitempty" description:"主机ROOT密码"`
 	Description string `orm:"size(128);null" json:"description,omitempty" description:"描述信息"`
 	Ids         []int  `orm:"-" json:"ids,omitempty"`
 }
@@ -68,6 +68,28 @@ func (m *Host) Add() (err error, errC *sutil.ControllerError) {
 	_, err = o.Insert(m)
 	if err != nil {
 		errC = sutil.ErrDbInsert
+		return
+	}
+	return
+}
+
+func (m *Host) Update() (err error, errC *sutil.ControllerError) {
+	exist := o.QueryTable(&Host{}).Filter("IP", m.IP).Filter("Id__ne", m.Id).Exist()
+	if exist {
+		err = fmt.Errorf(sutil.ErrDupRecord.Message)
+		errC = sutil.ErrDupRecord
+		return
+	}
+	_, err = o.Update(m,
+		"HostName",
+		"IP",
+		"User",
+		"Passwd",
+		"RootPasswd",
+		"Description",
+	)
+	if err != nil {
+		errC = sutil.ErrDbUpdate
 		return
 	}
 	return

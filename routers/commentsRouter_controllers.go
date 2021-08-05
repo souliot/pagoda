@@ -27,6 +27,15 @@ func init() {
 
     beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:HostController"] = append(beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:HostController"],
         beego.ControllerComments{
+            Method: "Update",
+            Router: "/",
+            AllowHTTPMethods: []string{"put"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:HostController"] = append(beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:HostController"],
+        beego.ControllerComments{
             Method: "DeleteMulti",
             Router: "/",
             AllowHTTPMethods: []string{"delete"},
@@ -72,6 +81,15 @@ func init() {
 
     beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:MetaComponentController"] = append(beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:MetaComponentController"],
         beego.ControllerComments{
+            Method: "Update",
+            Router: "/",
+            AllowHTTPMethods: []string{"put"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:MetaComponentController"] = append(beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:MetaComponentController"],
+        beego.ControllerComments{
             Method: "DeleteMulti",
             Router: "/",
             AllowHTTPMethods: []string{"delete"},
@@ -111,6 +129,15 @@ func init() {
             Method: "Add",
             Router: "/",
             AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:PropertyController"] = append(beego.GlobalControllerRouter["github.com/souliot/pagoda/controllers:PropertyController"],
+        beego.ControllerComments{
+            Method: "Update",
+            Router: "/",
+            AllowHTTPMethods: []string{"put"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})

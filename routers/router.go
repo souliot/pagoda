@@ -28,7 +28,7 @@ func init() {
 				&controllers.MetaComponentController{},
 			),
 		),
-		beego.NSNamespace("/property",
+		beego.NSNamespace("/properties",
 			beego.NSInclude(
 				&controllers.PropertyController{},
 			),

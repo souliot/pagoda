@@ -12,13 +12,13 @@ import (
 type User struct {
 	PageQuery  `orm:"-"`
 	Id         int      `json:"id" description:"用户ID"`
-	UserName   string   `orm:"size(64)" json:"username" description:"登陆名"`
-	Password   string   `orm:"size(64)" json:"password" description:"登陆密码"`
+	UserName   string   `orm:"size(64)" json:"username,omitempty" description:"登陆名"`
+	Password   string   `orm:"size(64)" json:"password,omitempty" description:"登陆密码"`
 	Name       string   `orm:"size(64);null" json:"realName,omitempty" description:"用户姓名"`
-	CreateTime int64    `json:"create_time" description:"创建时间"`
-	Salt       string   `orm:"size(128)" json:"salt" description:"密码加密"`
+	CreateTime int64    `json:"create_time,omitempty" description:"创建时间"`
+	Salt       string   `orm:"size(128)" json:"salt,omitempty" description:"密码加密"`
 	Ids        []int    `orm:"-" json:"ids,omitempty"`
-	Roles      []string `orm:"-" json:"roles,omitempty"`
+	Roles      []string `orm:"-" json:"roles,omitempty" description:"用户角色"`
 }
 
 func init() {

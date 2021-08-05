@@ -9,10 +9,10 @@ import (
 )
 
 type Token struct {
-	Id         int    `json:"id"`
-	Token      string `json:"token"`
-	Secret     string `json:"secret"`
-	CreateTime int64  `json:"create_time"`
+	Id         int    `json:"id,omitempty"`
+	Token      string `json:"token,omitempty"`
+	Secret     string `json:"secret,omitempty"`
+	CreateTime int64  `json:"create_time,omitempty"`
 }
 
 func init() {
